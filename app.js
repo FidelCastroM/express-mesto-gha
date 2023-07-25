@@ -6,7 +6,11 @@ const app = express();
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
-mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
+mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  family: 4,
+});
 
 app.use(bodyParser.json());
 
