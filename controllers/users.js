@@ -1,16 +1,11 @@
 const User = require('../models/user');
 
-const getUsers = (req, res) => {
+module.exports.getUsers = (req, res) => {
   User.find({})
-    .then((users) => {
-      res.send(users);
-    })
-    .catch(() => {
-      res.status(500).send({ message: 'На сервере произошла ошибка' });
-    });
+    .then((users) => res.send(users))
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
-
-const createUser = (req, res) => {
+module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then((user) => res.status(201).send(user))
@@ -18,29 +13,27 @@ const createUser = (req, res) => {
       if (error.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(500).send({ message: 'На сервере произошла ошибка' });
+        res.status(500).send({ message: 'Произошла ошибка на сервере' });
       }
     });
 };
-
-const getUserById = (req, res) => {
+module.exports.getUserById = (req, res) => {
   User.findById(req.params.Id)
     .orFail(() => new Error('UserNotFound'))
     .then((user) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(400).send({ message: 'Переданы некорректные данные' });
-      } else if (err.message === 'UserNotFound') {
+      if (err.message === 'UserNotFound') {
         res.status(404).send({ message: 'Пользователь не найден' });
+      } else if (err.name === 'ValidationError' || err.name === 'CastError') {
+        res.status(400).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(500).send({ message: 'На сервере произошла ошибка' });
+        res.status(500).send({ message: 'Произошла ошибка' });
       }
     });
 };
-
-const updateUserInfo = (req, res) => {
+module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -60,14 +53,12 @@ const updateUserInfo = (req, res) => {
       } else if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(500).send({ message: 'На сервере произошла ошибка' });
+        res.status(500).send({ message: 'Произошла ошибка' });
       }
     });
 };
-
-const updateUserAvatar = (req, res) => {
+module.exports.updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
-
   User.findByIdAndUpdate(
     req.user._id,
     { avatar },
@@ -86,15 +77,7 @@ const updateUserAvatar = (req, res) => {
       } else if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(500).send({ message: 'На сервере произошла ошибка' });
+        res.status(500).send({ message: 'Произошла ошибка' });
       }
     });
-};
-
-module.exports = {
-  createUser,
-  getUserById,
-  getUsers,
-  updateUserInfo,
-  updateUserAvatar,
 };
