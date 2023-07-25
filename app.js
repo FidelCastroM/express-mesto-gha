@@ -20,6 +20,10 @@ app.use((req, res, next) => {
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 
+app.use('/*', (req, res) => {
+  res.status(404).send({ message: 'Такой страницы не существует' });
+});
+
 app.listen(3000, () => {
   // eslint-disable-next-line no-console
   console.log('Server is running!');
