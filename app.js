@@ -5,8 +5,6 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 
-const app = express();
-
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
@@ -14,6 +12,8 @@ const auth = require('./middlewares/auth');
 const NotFound = require('./utils/errors/NotFound');
 const errorHandler = require('./middlewares/errorHandler');
 const { newUserValidation, userAuthValidation } = require('./middlewares/validations');
+
+const app = express();
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
   useNewUrlParser: true,
