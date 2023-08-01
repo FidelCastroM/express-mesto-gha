@@ -11,7 +11,7 @@ const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFound = require('./utils/errors/NotFound');
 const errorHandler = require('./middlewares/errorHandler');
-const { newUserValidation, userAuthValidation } = require('./middlewares/validations');
+const { validationNewUser, validationUserAuth } = require('./middlewares/validations');
 
 const app = express();
 
@@ -25,8 +25,8 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.post('/signin', userAuthValidation, login);
-app.post('/signup', newUserValidation, createUser);
+app.post('/signin', validationUserAuth, login);
+app.post('/signup', validationNewUser, createUser);
 
 app.use(auth);
 

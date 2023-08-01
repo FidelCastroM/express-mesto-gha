@@ -2,39 +2,39 @@ const { celebrate, Joi } = require('celebrate');
 
 const imageUrlPattern = /^(https?:\/\/)?[^\s]*\.(jpg|jpeg|png|gif|bmp|test)$/;
 
-const userValidation = celebrate({
+const validationUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
 });
 
-const userAvatarValidation = celebrate({
+const validationAvatar = celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().pattern(imageUrlPattern).required(),
   }),
 });
 
-const userIDValidation = celebrate({
+const validationUserID = celebrate({
   params: Joi.object().keys({
     userId: Joi.string().length(24).hex().required(),
   }),
 });
 
-const cardIDValidation = celebrate({
+const validationcardID = celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().length(24).hex().required(),
   }),
 });
 
-const cardValidation = celebrate({
+const validationCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
     link: Joi.string().pattern(imageUrlPattern).required(),
   }),
 });
 
-const newUserValidation = celebrate({
+const validationNewUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
@@ -44,7 +44,7 @@ const newUserValidation = celebrate({
   }),
 });
 
-const userAuthValidation = celebrate({
+const validationUserAuth = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
@@ -52,11 +52,11 @@ const userAuthValidation = celebrate({
 });
 
 module.exports = {
-  userValidation,
-  userAvatarValidation,
-  userIDValidation,
-  cardIDValidation,
-  cardValidation,
-  newUserValidation,
-  userAuthValidation,
+  validationUser,
+  validationAvatar,
+  validationUserID,
+  validationcardID,
+  validationCard,
+  validationNewUser,
+  validationUserAuth,
 };
