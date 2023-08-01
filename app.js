@@ -10,7 +10,7 @@ const cardsRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFound = require('./utils/errors/NotFound');
-const errorHandler = require('./middlewares/errorHandler');
+const handlerError = require('./middlewares/handlerError');
 const { validationNewUser, validationUserAuth } = require('./middlewares/validations');
 
 const app = express();
@@ -39,7 +39,7 @@ app.use('/*', (req, res, next) => {
 
 app.use(errors());
 
-app.use(errorHandler);
+app.use(handlerError);
 
 app.listen(3000, () => {
   // eslint-disable-next-line no-console
