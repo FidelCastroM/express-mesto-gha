@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const BadRequest = require('../utils/errors/BadRequest');
-const ErrorAccess = require('../utils/errors/ErrorAccess');
+const Unauthorized = require('../utils/errors/Unauthorized');
 const NotFound = require('../utils/errors/NotFound');
-const NotUnique = require('../utils/errors/NotUnique');
+const Conflict = require('../utils/errors/Conflict');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -13,12 +13,12 @@ const login = (req, res, next) => {
     .select('+password')
     .then((user) => {
       if (!user) {
-        throw new ErrorAccess('Неправильные почта или пароль');
+        throw new Unauthorized('Неправильные почта или пароль');
       }
 
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          throw new ErrorAccess('Неправильные почта или пароль');
+          throw new Unauthorized('Неправильные почта или пароль');
         }
 
         const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
@@ -74,7 +74,7 @@ const createUser = (req, res, next) => {
       if (error.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные'));
       } else if (error.name === 'MongoError' || error.code === 11000) {
-        next(new NotUnique('Пользователь с таким email уже зарегистрирован'));
+        next(new Conflict('Пользователь с таким email уже зарегистрирован'));
       } else {
         next(error);
       }

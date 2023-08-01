@@ -1,8 +1,8 @@
-class NotUnique extends Error {
+class Conflict extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 409;
   }
 }
 
-module.exports = NotUnique;
+module.exports = Conflict;
