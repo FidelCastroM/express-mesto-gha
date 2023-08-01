@@ -1,8 +1,8 @@
-class BadRequest extends Error {
+class ErrorAccess extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 401;
   }
 }
 
-module.exports = BadRequest;
+module.exports = ErrorAccess;
